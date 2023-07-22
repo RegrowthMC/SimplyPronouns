@@ -21,7 +21,7 @@ public final class SimplyPronouns extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        pronounsManager.getIoHandler().disableIOHandler();
+        pronounsManager.disableIoHandlers();
         userManager.getIoHandler().disableIOHandler();
     }
 
