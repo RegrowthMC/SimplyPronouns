@@ -1,1 +1,1 @@
-rootProject.name = "PronounsPlus"
+rootProject.name = "SimplyPronouns"

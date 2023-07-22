@@ -1,5 +1,5 @@
-name: PronounsPlus
+name: SimplyPronouns
 version: '${version}'
-main: me.dave.pronounsplus.PronounsPlus
+main: me.dave.simplypronouns.SimplyPronouns
 api-version: '1.20'
 authors: [Dav_e_]

@@ -19,7 +19,9 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
-    shadow(files("libs/EnchantedStorage.jar"))
+    compileOnly("me.clip:placeholderapi:2.11.2")
+    shadow(files("libs/EnchantedStorage-1.0.7.jar"))
+    shadow("mysql:mysql-connector-java:8.0.25")
     shadow("com.github.CoolDCB:ChatColorHandler:v1.2.3")
 }
 
