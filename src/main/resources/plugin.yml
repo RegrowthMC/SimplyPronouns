@@ -1,0 +1,5 @@
+name: PronounsPlus
+version: '${version}'
+main: me.dave.pronounsplus.PronounsPlus
+api-version: '1.20'
+authors: [Dav_e_]
