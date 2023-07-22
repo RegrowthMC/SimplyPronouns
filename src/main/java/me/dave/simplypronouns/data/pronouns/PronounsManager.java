@@ -9,12 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class PronounsManager {
     private PronounsIOHandler pronounsIOHandler;
     private IOHandler<RequestedPronouns, String> requestsIOHandler;
     private static final HashMap<Integer, Pronouns> pronounsCache = new HashMap<>();
-    private static final HashMap<Integer, RequestedPronouns> requestedPronounsCache = new HashMap<>();
+    private static final HashSet<RequestedPronouns> requestsCache = new HashSet<>();
 
     public PronounsManager() {
         // Adds empty pronouns into cache
@@ -54,11 +55,12 @@ public class PronounsManager {
 
     @NotNull
     public Collection<RequestedPronouns> getAllRequestedPronouns() {
-        return requestedPronounsCache.values();
+        return requestsCache;
     }
 
-    public void loadRequestedPronouns(int id) {
-
+    public void loadRequestedPronouns(String pronouns) {
+        // TODO: look into request ids?
+        requestsIOHandler.loadData(pronouns).thenAccept(requestsCache::add);
     }
 
     public void loadAllRequestedPronouns() {
