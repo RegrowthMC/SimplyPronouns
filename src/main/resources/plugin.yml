@@ -1,5 +1,6 @@
 name: SimplyPronouns
 version: '${version}'
-main: me.dave.simplypronouns.SimplyPronouns
+main: org.lushplugins.simplypronouns.SimplyPronouns
 api-version: '1.20'
-authors: [Dav_e_]
+authors:
+  - OakLoaf

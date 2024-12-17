@@ -1,7 +1,5 @@
-
 # The default format that will be output
 default-format: "(%pronouns%)"
 
-requests:
-  # Whether players can request pronouns to be added
-  enabled: true
+# Whether players must request pronouns to be added
+require-requests: true

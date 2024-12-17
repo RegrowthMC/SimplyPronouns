@@ -1,53 +1,63 @@
 plugins {
-    java
-    `kotlin-dsl`
+    `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version("7.1.2")
+    id("com.gradleup.shadow") version("8.3.0")
 }
 
-group = "me.dave"
-version = "1.0"
+group = "org.lushplugins"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
-    maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
-    maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")}
-    maven { url = uri("https://jitpack.io")}
+    maven("https://oss.sonatype.org/content/groups/public/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
+    // Dependencies
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+
+    // Soft Dependencies
     compileOnly("me.clip:placeholderapi:2.11.2")
-    shadow(files("libs/EnchantedStorage-1.0.7.jar"))
-    shadow("mysql:mysql-connector-java:8.0.25")
-    shadow("com.github.CoolDCB:ChatColorHandler:v1.2.3")
+
+    // Libraries
+    implementation(files("libs/EnchantedStorage-1.0.7.jar"))
+    implementation("mysql:mysql-connector-java:8.0.25")
+    implementation("com.github.CoolDCB:ChatColorHandler:v1.2.3")
 }
 
 java {
-    configurations.shadow.get().dependencies.remove(dependencies.gradleApi())
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+
+    registerFeature("optional") {
+        usingSourceSet(sourceSets["main"])
+    }
+
+    withSourcesJar()
 }
 
-tasks.shadowJar {
-    minimize()
-    configurations = listOf(project.configurations.shadow.get())
-    val folder = System.getenv("pluginFolder_1-20")
-    if (folder != null) destinationDirectory.set(file(folder))
-    archiveFileName.set("${project.name}-${project.version}.jar")
-}
+tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
 
-tasks.withType<JavaCompile>() {
-    options.encoding = "UTF-8"
-}
+    shadowJar {
+        minimize()
 
-// Handles version variables
-tasks.processResources {
-    expand(project.properties)
+        archiveFileName.set("${project.name}-${project.version}.jar")
+    }
 
-    inputs.property("version", rootProject.version)
-    filesMatching("plugin.yml") {
-        expand("version" to rootProject.version)
+    processResources{
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
+
+        inputs.property("version", rootProject.version)
+        filesMatching("plugin.yml") {
+            expand("version" to rootProject.version)
+        }
     }
 }
