@@ -46,6 +46,8 @@ tasks {
     }
 
     shadowJar {
+        relocate("org.lushplugins.lushlib", "org.lushplugins.simplypronouns.libraries.lushlib")
+
         minimize()
 
         archiveFileName.set("${project.name}-${project.version}.jar")
