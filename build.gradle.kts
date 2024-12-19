@@ -13,7 +13,7 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-    maven("https://jitpack.io")
+    maven("https://repo.lushplugins.org/snapshots") // LushLib
 }
 
 dependencies {
@@ -24,9 +24,9 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.2")
 
     // Libraries
-    implementation(files("libs/EnchantedStorage-1.0.7.jar"))
-    implementation("mysql:mysql-connector-java:8.0.25")
-    implementation("com.github.CoolDCB:ChatColorHandler:v1.2.3")
+    implementation("org.lushplugins:LushLib:0.10.24")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("mysql:mysql-connector-java:8.0.33")
 }
 
 java {

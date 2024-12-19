@@ -1,43 +1,66 @@
 package org.lushplugins.simplypronouns;
 
-import org.lushplugins.simplypronouns.data.config.ConfigManager;
-import org.lushplugins.simplypronouns.data.pronouns.PronounsManager;
-import org.lushplugins.simplypronouns.data.user.UserManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.lushplugins.lushlib.plugin.SpigotPlugin;
+import org.lushplugins.simplypronouns.commands.CheckPronounsCommand;
+import org.lushplugins.simplypronouns.commands.PronounsCommand;
+import org.lushplugins.simplypronouns.config.ConfigManager;
+import org.lushplugins.simplypronouns.data.UserManager;
+import org.lushplugins.simplypronouns.hooks.PlaceholderAPIHook;
+import org.lushplugins.simplypronouns.listener.PlayerListener;
+import org.lushplugins.simplypronouns.pronouns.PronounManager;
+import org.lushplugins.simplypronouns.storage.StorageManager;
 
-public final class SimplyPronouns extends JavaPlugin {
+public final class SimplyPronouns extends SpigotPlugin {
     private static SimplyPronouns plugin;
-    private static ConfigManager configManager;
-    private static PronounsManager pronounsManager;
-    private static UserManager userManager;
+
+    private ConfigManager configManager;
+    private StorageManager storageManager;
+    private PronounManager pronounManager;
+    private UserManager userManager;
+
+    @Override
+    public void onLoad() {
+        plugin = this;
+    }
 
     @Override
     public void onEnable() {
-        plugin = this;
         configManager = new ConfigManager();
-        pronounsManager = new PronounsManager();
+        configManager.reloadConfig();
+        pronounManager = new PronounManager();
+        storageManager = new StorageManager();
         userManager = new UserManager();
+
+        addHook("PlaceholderAPI", () -> registerHook(new PlaceholderAPIHook()));
+
+        registerListener(new PlayerListener());
+
+        registerCommand(new CheckPronounsCommand());
+        registerCommand(new PronounsCommand());
     }
 
     @Override
     public void onDisable() {
-        pronounsManager.disableIoHandlers();
-        userManager.getIoHandler().disableIOHandler();
+        // Plugin disable logic
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public PronounManager getPronounManager() {
+        return pronounManager;
+    }
+
+    public StorageManager getStorageManager() {
+        return storageManager;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
     }
 
     public static SimplyPronouns getInstance() {
         return plugin;
-    }
-
-    public static ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    public static PronounsManager getPronounsManager() {
-        return pronounsManager;
-    }
-
-    public static UserManager getUserManager() {
-        return userManager;
     }
 }

@@ -1,5 +1,6 @@
-# The default format that will be output
-default-format: "(%pronouns%)"
+# The format that will be displayed by placeholders
+placeholder-format: "(%pronouns%)"
 
 # Whether players must request pronouns to be added
-require-requests: true
+require-approval: true
+
