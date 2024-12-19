@@ -27,6 +27,7 @@ dependencies {
     implementation("org.lushplugins:LushLib:0.10.24")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
 }
 
 java {
