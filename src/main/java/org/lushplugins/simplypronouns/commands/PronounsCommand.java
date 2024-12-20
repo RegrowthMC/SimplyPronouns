@@ -16,6 +16,7 @@ public class PronounsCommand extends Command {
     public PronounsCommand() {
         super("pronouns");
         addSubCommand(new BlacklistCommand());
+        addSubCommand(new ReloadCommand());
         addSubCommand(new RequestsCommand());
     }
 
@@ -27,34 +28,34 @@ public class PronounsCommand extends Command {
         }
 
         if (args.length < 1) {
-            // TODO: Make message configurable
-            ChatColorHandler.sendMessage(sender, "Invalid command format try: /pronouns <pronouns>");
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("invalid-command")
+                .replace("%command%", "/pronouns <pronouns>"));
             return true;
         }
 
         String requestedPronouns = args[0];
         if (requestedPronouns.length() > 24) {
-            ChatColorHandler.sendMessage(sender, "Pronouns cannot exceed 24 characters");
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-char-limit"));
             return true;
         }
 
         if (!PRONOUNS_PATTERN.matcher(requestedPronouns).matches()) {
-            ChatColorHandler.sendMessage(sender, "Invalid command format try: /pronouns <pronouns>");
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("invalid-command")
+                .replace("%command%", "/pronouns <pronouns>"));
             return true;
         }
 
         PronounsUser user = SimplyPronouns.getInstance().getUserManager().getCachedUser(player.getUniqueId());
         if (user == null) {
-            // TODO: Make message configurable
-            ChatColorHandler.sendMessage(sender, "Could not set your pronouns, please try again later");
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
             return true;
         }
 
         SimplyPronouns.getInstance().getPronounManager().getPronouns(requestedPronouns.split("/")).thenAccept(pronouns -> {
             user.setPronouns(pronouns);
 
-            // TODO: Make message configurable
-            ChatColorHandler.sendMessage(sender, String.format("Your pronouns have been set to %s", requestedPronouns));
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-set")
+                .replace("%pronouns%", requestedPronouns));
         });
 
         return true;

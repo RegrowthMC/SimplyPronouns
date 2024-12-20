@@ -18,8 +18,8 @@ public class BlacklistCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
         if (args.length != 1) {
-            // TODO: Make message configurable
-            ChatColorHandler.sendMessage(sender, "Invalid command format try: /pronouns blacklist <pronoun>");
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("invalid-command")
+                .replace("%command%", "/pronouns blacklist <pronoun>"));
             return true;
         }
 

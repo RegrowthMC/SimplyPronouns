@@ -2,5 +2,14 @@
 placeholder-format: "(%pronouns%)"
 
 # Whether players must request pronouns to be added
-require-approval: true
+require-approval: false
 
+messages:
+  pronouns-set: "Your pronouns have been set to '%pronouns%'"
+  pronouns-char-limit: "Pronouns cannot exceed 24 characters"
+  check-pronouns: "%player%'s pronouns are '%pronouns%'"
+  check-pronouns-none: "%player% has not set any pronouns"
+  invalid-command: "Invalid command format, try %command%"
+  failed-to-set: "Failed to set your pronouns, please try again later!"
+  player-not-online: "Could not find player '%s' online"
+  reloaded: "&#b7faa2SimplyPronouns has been reloaded &#66b04f🔃"

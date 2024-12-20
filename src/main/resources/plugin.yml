@@ -9,3 +9,5 @@ commands:
     usage: /pronouns <pronouns>
   checkpronouns:
     usage: /checkpronouns <player>
+softdepend:
+  - PlaceholderAPI
