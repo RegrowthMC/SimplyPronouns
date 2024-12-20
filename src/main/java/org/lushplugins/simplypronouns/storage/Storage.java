@@ -1,6 +1,8 @@
 package org.lushplugins.simplypronouns.storage;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
 
 import java.util.Arrays;
@@ -19,7 +21,8 @@ public interface Storage {
 
     String loadPronouns(UUID uuid);
 
-    void savePronouns(UUID uuid, String pronouns);
+    // TODO: Change this to accept PronounsUser Object
+    void savePronounsUser(@NotNull UUID uuid, @Nullable String username, @Nullable String pronouns);
 
     default Pronoun loadPronoun(String pronoun) {
         Pronoun.Status status = loadPronounStatus(pronoun);

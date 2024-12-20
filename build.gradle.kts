@@ -2,6 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.gradleup.shadow") version("8.3.0")
+    id("xyz.jpenilla.run-paper") version("2.3.1")
 }
 
 group = "org.lushplugins"
@@ -63,4 +64,22 @@ tasks {
             expand("version" to rootProject.version)
         }
     }
+
+    runServer {
+        minecraftVersion("1.21")
+
+        downloadPlugins {
+            hangar("PlaceholderAPI", "2.11.6")
+        }
+    }
+}
+
+// Runs Test Server with Java 21
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }

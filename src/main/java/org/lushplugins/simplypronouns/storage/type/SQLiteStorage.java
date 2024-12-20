@@ -10,8 +10,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
-public class SQLiteStorage extends MySQLStorage {
+public class SQLiteStorage extends AbstractSQLStorage {
     private static final String DATABASE_PATH = new File(SimplyPronouns.getInstance().getDataFolder(), "data.db").getAbsolutePath();
+
+    @Override
+    public void enable(ConfigurationSection config) {
+        super.enable(config);
+        runSqlFile("storage/sqlite_setup.sql");
+    }
 
     @Override
     public String getSavePronounsStatement() {

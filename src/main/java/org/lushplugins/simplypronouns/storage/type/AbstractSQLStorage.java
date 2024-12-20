@@ -1,11 +1,17 @@
 package org.lushplugins.simplypronouns.storage.type;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
 import org.lushplugins.simplypronouns.storage.Storage;
 
 import javax.sql.DataSource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public abstract class AbstractSQLStorage implements Storage {
     protected static final String USER_TABLE = "simplypronouns_users";
@@ -52,12 +59,13 @@ public abstract class AbstractSQLStorage implements Storage {
 
     @SuppressWarnings("SqlSourceToSinkFlow")
     @Override
-    public void savePronouns(UUID uuid, String pronouns) {
+    public void savePronounsUser(@NotNull UUID uuid, @Nullable String username, @Nullable String pronouns) {
         try (Connection conn = conn();
              PreparedStatement stmt = conn.prepareStatement(getSavePronounsStatement())
         ) {
             stmt.setString(1, uuid.toString());
-            stmt.setString(2, pronouns);
+            stmt.setString(2, username);
+            stmt.setString(3, pronouns);
 
             stmt.execute();
         } catch (SQLException e) {
@@ -178,6 +186,26 @@ public abstract class AbstractSQLStorage implements Storage {
     }
 
     protected abstract DataSource setupDataSource(ConfigurationSection config);
+
+    protected void runSqlFile(String filePath) {
+        String setup;
+        try (InputStream in = AbstractSQLStorage.class.getClassLoader().getResourceAsStream(filePath)) {
+            setup = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining(""));
+        } catch (IOException e) {
+            SimplyPronouns.getInstance().getLogger().log(Level.SEVERE, "Could not read db setup file.", e);
+            e.printStackTrace();
+            return;
+        }
+
+        String[] statements = setup.split("\\|");
+        for (String statement : statements) {
+            try (Connection conn = conn(); PreparedStatement stmt = conn.prepareStatement(statement)) {
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     protected void testDataSourceConnection() {
         try (Connection conn = conn()) {

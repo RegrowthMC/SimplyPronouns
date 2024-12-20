@@ -2,6 +2,7 @@ package org.lushplugins.simplypronouns.data;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.pronouns.Pronouns;
 
 import java.util.UUID;
@@ -25,5 +26,9 @@ public class PronounsUser {
 
     public void setPronouns(@Nullable Pronouns pronouns) {
         this.pronouns = pronouns;
+
+        if (pronouns != null) {
+            SimplyPronouns.getInstance().getStorageManager().savePronounsUser(uuid, null, pronouns.asString());
+        }
     }
 }

@@ -26,7 +26,7 @@ public class PronounsCommand extends Command {
             return true;
         }
 
-        if (args.length != 1) {
+        if (args.length < 1) {
             // TODO: Make message configurable
             ChatColorHandler.sendMessage(sender, "Invalid command format try: /pronouns <pronouns>");
             return true;
@@ -38,8 +38,7 @@ public class PronounsCommand extends Command {
             return true;
         }
 
-        // TODO: Test matcher
-        if (PRONOUNS_PATTERN.matcher(requestedPronouns).matches()) {
+        if (!PRONOUNS_PATTERN.matcher(requestedPronouns).matches()) {
             ChatColorHandler.sendMessage(sender, "Invalid command format try: /pronouns <pronouns>");
             return true;
         }

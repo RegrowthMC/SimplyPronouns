@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS simplypronouns_users
     pronouns TEXT,
     PRIMARY KEY (uuid)
 );
-
+|
 CREATE TABLE IF NOT EXISTS simplypronouns_pronouns
 (
     pronoun TEXT NOT NULL,

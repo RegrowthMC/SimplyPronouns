@@ -8,6 +8,12 @@ import javax.sql.DataSource;
 public class MySQLStorage extends AbstractSQLStorage {
 
     @Override
+    public void enable(ConfigurationSection config) {
+        super.enable(config);
+        runSqlFile("storage/mysql_setup.sql");
+    }
+
+    @Override
     public String getSavePronounsStatement() {
         return String.format("INSERT INTO %s (uuid, username, pronouns) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE pronouns = VALUES(pronouns);", USER_TABLE);
     }
