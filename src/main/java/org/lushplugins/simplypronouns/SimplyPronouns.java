@@ -1,5 +1,6 @@
 package org.lushplugins.simplypronouns;
 
+import org.lushplugins.lushlib.LushLib;
 import org.lushplugins.lushlib.plugin.SpigotPlugin;
 import org.lushplugins.simplypronouns.commands.CheckPronounsCommand;
 import org.lushplugins.simplypronouns.commands.PronounsCommand;
@@ -21,6 +22,7 @@ public final class SimplyPronouns extends SpigotPlugin {
     @Override
     public void onLoad() {
         plugin = this;
+        LushLib.getInstance().enable(plugin);
     }
 
     @Override

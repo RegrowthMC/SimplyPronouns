@@ -1,5 +1,6 @@
 package org.lushplugins.simplypronouns.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -7,6 +8,7 @@ import org.lushplugins.lushlib.command.Command;
 import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.data.PronounsUser;
+import org.lushplugins.simplypronouns.gui.TermsAcceptGui;
 
 import java.util.regex.Pattern;
 
@@ -52,10 +54,19 @@ public class PronounsCommand extends Command {
         }
 
         SimplyPronouns.getInstance().getPronounManager().getPronouns(requestedPronouns.split("/")).thenAccept(pronouns -> {
-            user.setPronouns(pronouns);
+            Bukkit.getScheduler().runTask(SimplyPronouns.getInstance(), () -> {
+                TermsAcceptGui.builder()
+                    .onAccept(() -> {
+                        user.setPronouns(pronouns);
 
-            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-set")
-                .replace("%pronouns%", requestedPronouns));
+                        ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-set")
+                            .replace("%pronouns%", requestedPronouns));
+                    })
+                    .onDecline(() -> {
+                        ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
+                    })
+                    .open(player);
+            });
         });
 
         return true;
