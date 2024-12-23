@@ -33,7 +33,7 @@ public final class SimplyPronouns extends SpigotPlugin {
         storageManager = new StorageManager();
         userManager = new UserManager();
 
-        addHook("PlaceholderAPI", () -> registerHook(new PlaceholderAPIHook()));
+        addHook("PlaceholderAPI", () -> new PlaceholderAPIHook().enable());
 
         registerListener(new PlayerListener());
 
