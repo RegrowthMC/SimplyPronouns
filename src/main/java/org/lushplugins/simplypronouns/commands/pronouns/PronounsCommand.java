@@ -18,7 +18,7 @@ public class PronounsCommand extends Command {
     public PronounsCommand() {
         super("pronouns");
         addSubCommand(new BlacklistPronounsCommand());
-//        addSubCommand(new RequestedPronounsCommand());
+        addSubCommand(new RequestedPronounsCommand());
     }
 
     @Override
