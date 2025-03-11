@@ -37,7 +37,7 @@ public class UserManager {
                 if (pronouns == null) {
                     future = CompletableFuture.completedFuture(new PronounsUser(uuid, null, preferredName));
                 } else {
-                    future = SimplyPronouns.getInstance().getPronounManager().getPronouns(pronouns.split("/"))
+                    future = SimplyPronouns.getInstance().getPronounManager().compilePronouns(pronouns.split("/"))
                         .thenApply(compiledPronouns -> new PronounsUser(uuid, compiledPronouns, preferredName));
                 }
             }

@@ -33,8 +33,12 @@ public class Pronoun {
         this.status = status;
 
         if (save) {
-            SimplyPronouns.getInstance().getStorageManager().savePronounStatus(pronoun, status);
+            saveStatus();
         }
+    }
+
+    public void saveStatus() {
+        SimplyPronouns.getInstance().getStorageManager().savePronounStatus(pronoun, status);
     }
 
     public enum Status {

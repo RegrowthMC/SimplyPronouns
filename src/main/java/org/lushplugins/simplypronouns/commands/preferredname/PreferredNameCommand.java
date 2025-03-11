@@ -41,7 +41,7 @@ public class PreferredNameCommand extends Command {
             return true;
         }
 
-        if (SimplyPronouns.getInstance().blockedByFilters(preferredName)) {
+        if (SimplyPronouns.getInstance().isBlockedByFilters(preferredName)) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
             return true;
         }

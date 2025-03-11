@@ -24,7 +24,7 @@ public class BlacklistPronounsCommand extends SubCommand {
         }
 
         String rawPronoun = args[0];
-        SimplyPronouns.getInstance().getPronounManager().getOrCreatePronoun(rawPronoun).thenAccept(pronoun -> {
+        SimplyPronouns.getInstance().getPronounManager().findOrCreatePronoun(rawPronoun).thenAccept(pronoun -> {
             pronoun.setStatus(Pronoun.Status.DENIED);
         });
 

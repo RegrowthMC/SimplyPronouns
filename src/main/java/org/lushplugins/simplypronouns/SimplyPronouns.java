@@ -77,7 +77,7 @@ public final class SimplyPronouns extends SpigotPlugin {
         return userManager;
     }
 
-    public boolean blockedByFilters(String string) {
+    public boolean isBlockedByFilters(String string) {
         for (FilterHook hook : filterHooks) {
             if (!Objects.equals(hook.filter(string), string)) {
                 return true;
