@@ -27,13 +27,19 @@ public class UserManager {
     }
 
     public CompletableFuture<PronounsUser> loadUser(UUID uuid, boolean cache) {
-        return SimplyPronouns.getInstance().getStorageManager().loadPronouns(uuid).thenCompose(pronouns -> {
+        return SimplyPronouns.getInstance().getStorageManager().loadRawPronounsUser(uuid).thenCompose(rawUser -> {
             CompletableFuture<PronounsUser> future;
-            if (pronouns == null) {
-                future = CompletableFuture.completedFuture(new PronounsUser(uuid, null));
+            if (rawUser == null) {
+                future = CompletableFuture.completedFuture(new PronounsUser(uuid, null, null));
             } else {
-                future = SimplyPronouns.getInstance().getPronounManager().getPronouns(pronouns.split("/"))
-                    .thenApply(individualPronouns -> new PronounsUser(uuid, individualPronouns));
+                String pronouns = rawUser.first();
+                String preferredName = rawUser.second();
+                if (pronouns == null) {
+                    future = CompletableFuture.completedFuture(new PronounsUser(uuid, null, preferredName));
+                } else {
+                    future = SimplyPronouns.getInstance().getPronounManager().getPronouns(pronouns.split("/"))
+                        .thenApply(compiledPronouns -> new PronounsUser(uuid, compiledPronouns, preferredName));
+                }
             }
 
             future.thenAccept(user -> {

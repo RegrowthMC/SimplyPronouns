@@ -53,6 +53,14 @@ public class PlaceholderAPIHook extends Hook {
 
                 return SimplyPronouns.getInstance().getConfigManager().getPlaceholderFormat()
                     .replace("%pronouns%", pronouns.asString());
+            } else if (params.equals("preferred_name")) {
+                PronounsUser user = SimplyPronouns.getInstance().getUserManager().getCachedUser(player.getUniqueId());
+                if (user == null) {
+                    return "";
+                }
+
+                String preferredName = user.getPreferredName();
+                return preferredName != null ? preferredName : "";
             }
 
             return null;

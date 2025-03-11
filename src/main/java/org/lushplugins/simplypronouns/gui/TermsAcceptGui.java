@@ -10,27 +10,28 @@ import org.lushplugins.lushlib.gui.inventory.Gui;
 import org.lushplugins.lushlib.utils.DisplayItemStack;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TermsAcceptGui extends Gui {
     private final Runnable onDecline;
     private boolean accepted = false;
 
-    private TermsAcceptGui(String title, Runnable onAccept, Runnable onDecline, Player player) {
+    private TermsAcceptGui(String title, String terms, Runnable onAccept, Runnable onDecline, Player player) {
         super(27, title, player);
         this.onDecline = onDecline;
+
+        List<String> lore = Arrays.stream(terms.split("\\n"))
+            .map(line -> "&7" + line)
+            .collect(Collectors.toList());
+        lore.add("");
+        lore.add("<#b7faa2>ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ</#b7faa2>");
 
         addButton(13, new SimpleItemButton(DisplayItemStack.builder()
             .setType(Material.LIME_DYE)
             .setDisplayName("&rAccept Terms")
-            .setLore(List.of(
-                "&7Misuse of the pronouns feature is not tolerated.",
-                "&7Only set pronouns that you want others to use",
-                "&7when referring to you.",
-                "&7Chat rules also apply to pronouns",
-                "",
-                "<#b7faa2>ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ</#b7faa2>"
-            ))
+            .setLore(lore)
             .build(),
             (event) -> {
                 accepted = true;
@@ -60,6 +61,7 @@ public class TermsAcceptGui extends Gui {
 
     public static class Builder {
         private String title = "Accept Terms";
+        private String terms = "";
         private Runnable onAccept;
         private Runnable onDecline;
 
@@ -67,6 +69,11 @@ public class TermsAcceptGui extends Gui {
 
         public Builder title(String title) {
             this.title = title;
+            return this;
+        }
+
+        public Builder terms(String terms) {
+            this.terms = terms;
             return this;
         }
 
@@ -81,7 +88,7 @@ public class TermsAcceptGui extends Gui {
         }
 
         public TermsAcceptGui build(Player player) {
-            return new TermsAcceptGui(title, onAccept, onDecline, player);
+            return new TermsAcceptGui(title, terms, onAccept, onDecline, player);
         }
 
         public TermsAcceptGui open(Player player) {

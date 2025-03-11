@@ -20,13 +20,25 @@ public class SQLiteStorage extends AbstractSQLStorage {
     }
 
     @Override
-    public String getSavePronounsStatement() {
-        return String.format("INSERT INTO %s (uuid, username, pronouns) VALUES (?, ?, ?) ON CONFLICT (uuid) DO UPDATE SET pronouns = EXCLUDED.pronouns;", USER_TABLE);
+    public String getSavePronounsUserStatement() {
+        return String.format("""
+            INSERT INTO %s (uuid, username, pronouns, preferred_name)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT (uuid)
+            DO UPDATE SET
+                pronouns = EXCLUDED.pronouns,
+                preferred_name = EXCLUDED.preferred_name;
+            """, USER_TABLE);
     }
 
     @Override
     public String getSavePronounStatusStatement() {
-        return String.format("INSERT INTO %s (pronoun, status) VALUES (?, ?) ON CONFLICT (pronoun) DO UPDATE SET status = EXCLUDED.status;", PRONOUN_TABLE);
+        return String.format("""
+            INSERT INTO %s (pronoun, status)
+            VALUES (?, ?)
+            ON CONFLICT (pronoun)
+            DO UPDATE SET status = EXCLUDED.status;
+            """, PRONOUN_TABLE);
     }
 
     @Override

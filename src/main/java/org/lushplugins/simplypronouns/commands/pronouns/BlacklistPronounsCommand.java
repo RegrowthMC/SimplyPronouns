@@ -1,4 +1,4 @@
-package org.lushplugins.simplypronouns.commands;
+package org.lushplugins.simplypronouns.commands.pronouns;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,11 +8,11 @@ import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
 
-public class BlacklistCommand extends SubCommand {
+public class BlacklistPronounsCommand extends SubCommand {
 
-    public BlacklistCommand() {
+    public BlacklistPronounsCommand() {
         super("blacklist");
-        addRequiredPermission("simplypronouns.blacklist");
+        addRequiredPermission("simplypronouns.pronouns.blacklist");
     }
 
     @Override

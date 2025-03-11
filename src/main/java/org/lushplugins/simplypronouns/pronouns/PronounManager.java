@@ -22,6 +22,10 @@ public class PronounManager {
         return WeakRefMapUtils.get(pronounCache, pronoun);
     }
 
+    public void cachePronoun(Pronoun pronoun) {
+        this.pronounCache.put(pronoun.getPronoun(), new WeakReference<>(pronoun));
+    }
+
     /**
      * Get a pronoun from cache or load it from storage
      * @param rawPronoun pronoun to get
@@ -29,7 +33,7 @@ public class PronounManager {
      */
     public CompletableFuture<Pronoun> getOrCreatePronoun(String rawPronoun) {
         if (rawPronoun.contains("/")) {
-            throw new IllegalArgumentException(String.format("'%s' appears to be multiple pronouns, this class only accepts a singular pronoun", rawPronoun));
+            throw new IllegalArgumentException(String.format("'%s' appears to be multiple pronouns, this method only accepts a singular pronoun", rawPronoun));
         }
 
         return WeakRefMapUtils.get(pronounCache, rawPronoun, () -> {
@@ -41,12 +45,9 @@ public class PronounManager {
         });
     }
 
-    /**
-     * Get pronouns from cache or load it from storage
-     * @param pronouns pronouns to get
-     * @return future to return collected pronouns, if a pronoun isn't found it'll be created
-     */
+
     public CompletableFuture<Pronouns> getPronouns(String[] pronouns) {
+        // Gather cached pronouns
         List<Pronoun> cachedPronouns = new ArrayList<>();
         List<String> uncachedPronouns = new ArrayList<>();
         for (String pronoun : pronouns) {
@@ -58,6 +59,7 @@ public class PronounManager {
             }
         }
 
+        // If all pronouns are cached then return
         if (uncachedPronouns.isEmpty()) {
             return CompletableFuture.completedFuture(new Pronouns(cachedPronouns.toArray(Pronoun[]::new)));
         }
@@ -65,11 +67,12 @@ public class PronounManager {
         return SimplyPronouns.getInstance().getStorageManager().loadPronouns(uncachedPronouns.toArray(String[]::new)).thenApply((loadedPronouns) -> {
             for (int i = 0; i < loadedPronouns.size(); i++) {
                 Pronoun loadedPronoun = loadedPronouns.get(i);
-                if (loadedPronoun != null) {
-                    cachedPronouns.add(loadedPronoun);
-                } else {
-                    cachedPronouns.add(new Pronoun(uncachedPronouns.get(i), Pronoun.Status.AWAITING));
+                if (loadedPronoun == null) {
+                    loadedPronoun = new Pronoun(uncachedPronouns.get(i), Pronoun.Status.AWAITING);
                 }
+
+                cachedPronouns.add(loadedPronoun);
+                cachePronoun(loadedPronoun);
             }
 
             return new Pronouns(cachedPronouns.toArray(Pronoun[]::new));

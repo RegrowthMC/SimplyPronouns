@@ -1,4 +1,4 @@
-package org.lushplugins.simplypronouns.commands;
+package org.lushplugins.simplypronouns.commands.pronouns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

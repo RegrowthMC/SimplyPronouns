@@ -1,4 +1,4 @@
-package org.lushplugins.simplypronouns.commands;
+package org.lushplugins.simplypronouns.commands.pronouns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -17,9 +17,8 @@ public class PronounsCommand extends Command {
 
     public PronounsCommand() {
         super("pronouns");
-        addSubCommand(new BlacklistCommand());
-        addSubCommand(new ReloadCommand());
-        addSubCommand(new RequestsCommand());
+        addSubCommand(new BlacklistPronounsCommand());
+//        addSubCommand(new RequestedPronounsCommand());
     }
 
     @Override
@@ -56,6 +55,12 @@ public class PronounsCommand extends Command {
         SimplyPronouns.getInstance().getPronounManager().getPronouns(requestedPronouns.split("/")).thenAccept(pronouns -> {
             Bukkit.getScheduler().runTask(SimplyPronouns.getInstance(), () -> {
                 TermsAcceptGui.builder()
+                    .terms("""
+                        Misuse of the pronouns feature is not tolerated.
+                        Only set pronouns that you want others to use
+                        when referring to you.
+                        Chat rules also apply to pronouns.
+                        """)
                     .onAccept(() -> {
                         user.setPronouns(pronouns);
 

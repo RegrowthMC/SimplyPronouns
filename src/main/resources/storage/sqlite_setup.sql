@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS simplypronouns_users
     uuid BINARY(128) NOT NULL,
     username CHAR(17),
     pronouns TEXT,
+    preferred_name TEXT,
     PRIMARY KEY (uuid)
 );
 |

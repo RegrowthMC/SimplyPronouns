@@ -2,9 +2,11 @@ package org.lushplugins.simplypronouns.storage.type;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.lushplugins.lushlib.utils.Pair;
 import org.lushplugins.simplypronouns.SimplyPronouns;
+import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
+import org.lushplugins.simplypronouns.pronouns.Pronouns;
 import org.lushplugins.simplypronouns.storage.Storage;
 
 import javax.sql.DataSource;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -55,17 +58,65 @@ public abstract class AbstractSQLStorage implements Storage {
         return null;
     }
 
-    public abstract String getSavePronounsStatement();
+    @Override
+    public String loadPreferredName(UUID uuid) {
+        try (Connection conn = conn();
+             PreparedStatement stmt = conn.prepareStatement(String.format("""
+                 SELECT *
+                 FROM %s
+                 WHERE uuid = ?;
+                 """, USER_TABLE))
+        ) {
+            stmt.setString(1, uuid.toString());
+
+            ResultSet results = stmt.executeQuery();
+            return results.next() ? results.getString("preferred_name") : null;
+        } catch (SQLException e) {
+            SimplyPronouns.getInstance().getLogger().log(Level.SEVERE, "Failed to load user's preferred name: ", e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Pair<String, String> loadRawPronounsUser(UUID uuid) {
+        try (Connection conn = conn();
+             PreparedStatement stmt = conn.prepareStatement(String.format("""
+                 SELECT *
+                 FROM %s
+                 WHERE uuid = ?;
+                 """, USER_TABLE))
+        ) {
+            stmt.setString(1, uuid.toString());
+
+            ResultSet results = stmt.executeQuery();
+            if (results.next()) {
+                return new Pair<>(
+                    results.getString("pronouns"),
+                    results.getString("preferred_name"));
+            } else {
+                return new Pair<>(null, null);
+            }
+        } catch (SQLException e) {
+            SimplyPronouns.getInstance().getLogger().log(Level.SEVERE, "Failed to load user's preferred name: ", e);
+        }
+
+        return null;
+    }
+
+    public abstract String getSavePronounsUserStatement();
 
     @SuppressWarnings("SqlSourceToSinkFlow")
     @Override
-    public void savePronounsUser(@NotNull UUID uuid, @Nullable String username, @Nullable String pronouns) {
+    public void savePronounsUser(@NotNull PronounsUser user) {
         try (Connection conn = conn();
-             PreparedStatement stmt = conn.prepareStatement(getSavePronounsStatement())
+             PreparedStatement stmt = conn.prepareStatement(getSavePronounsUserStatement())
         ) {
-            stmt.setString(1, uuid.toString());
-            stmt.setString(2, username);
-            stmt.setString(3, pronouns);
+            stmt.setString(1, user.getUniqueId().toString());
+            stmt.setString(2, null); // TODO: Username
+            Pronouns pronouns = user.getPronouns();
+            stmt.setString(3, pronouns != null ? pronouns.asString() : null);
+            stmt.setString(4, user.getPreferredName());
 
             stmt.execute();
         } catch (SQLException e) {
@@ -115,7 +166,7 @@ public abstract class AbstractSQLStorage implements Storage {
                 String status = results.getString("status");
 
                 try {
-                    Pronoun.Status.valueOf(status.toUpperCase());
+                    return Pronoun.Status.valueOf(status.toUpperCase());
                 } catch (IllegalArgumentException e) {
                     SimplyPronouns.getInstance().getLogger().log(Level.SEVERE, String.format("Found invalid status for pronoun '%s': ", pronoun), e);
                     return Pronoun.Status.AWAITING;

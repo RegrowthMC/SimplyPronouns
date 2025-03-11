@@ -23,6 +23,7 @@ dependencies {
 
     // Soft Dependencies
     compileOnly("me.clip:placeholderapi:2.11.2")
+    compileOnly("org.lushplugins:LushChatFilter:1.0.0-alpha18")
 
     // Libraries
     implementation("org.lushplugins:LushLib:0.10.24")

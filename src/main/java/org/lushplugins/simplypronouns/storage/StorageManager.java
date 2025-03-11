@@ -2,8 +2,9 @@ package org.lushplugins.simplypronouns.storage;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.lushplugins.lushlib.utils.Pair;
 import org.lushplugins.simplypronouns.SimplyPronouns;
+import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
 import org.lushplugins.simplypronouns.storage.type.MySQLStorage;
 import org.lushplugins.simplypronouns.storage.type.SQLiteStorage;
@@ -57,8 +58,16 @@ public class StorageManager {
         return runAsync(() -> storage.loadPronouns(uuid));
     }
 
-    public CompletableFuture<Void> savePronounsUser(@NotNull UUID uuid, @Nullable String username, @Nullable String pronouns) {
-        return runAsync(() -> storage.savePronounsUser(uuid, username, pronouns));
+    public CompletableFuture<String> loadPreferredName(UUID uuid) {
+        return runAsync(() -> storage.loadPreferredName(uuid));
+    }
+
+    public CompletableFuture<Pair<String, String>> loadRawPronounsUser(UUID uuid) {
+        return runAsync(() -> storage.loadRawPronounsUser(uuid));
+    }
+
+    public CompletableFuture<Void> savePronounsUser(@NotNull PronounsUser user) {
+        return runAsync(() -> storage.savePronounsUser(user));
     }
 
     public CompletableFuture<Pronoun> loadPronoun(String pronoun) {

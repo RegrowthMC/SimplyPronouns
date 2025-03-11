@@ -1,4 +1,4 @@
-package org.lushplugins.simplypronouns.commands;
+package org.lushplugins.simplypronouns.commands.pronouns;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.lushplugins.lushlib.command.SubCommand;
 import org.lushplugins.simplypronouns.gui.RequestsGui;
 
-public class RequestsCommand extends SubCommand {
+public class RequestedPronounsCommand extends SubCommand {
 
-    public RequestsCommand() {
+    public RequestedPronounsCommand() {
         super("requests");
-        addRequiredPermission("simplypronouns.requests");
+        addRequiredPermission("simplypronouns.pronouns.requests");
     }
 
     @Override

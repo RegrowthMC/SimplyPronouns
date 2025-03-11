@@ -10,10 +10,12 @@ import java.util.UUID;
 public class PronounsUser {
     private final UUID uuid;
     private Pronouns pronouns;
+    private String preferredName;
 
-    public PronounsUser(@NotNull UUID uuid, @Nullable Pronouns pronouns) {
+    public PronounsUser(@NotNull UUID uuid, @Nullable Pronouns pronouns, @Nullable String preferredName) {
         this.uuid = uuid;
         this.pronouns = pronouns;
+        this.preferredName = preferredName;
     }
 
     public @NotNull UUID getUniqueId() {
@@ -26,9 +28,15 @@ public class PronounsUser {
 
     public void setPronouns(@Nullable Pronouns pronouns) {
         this.pronouns = pronouns;
+        SimplyPronouns.getInstance().getStorageManager().savePronounsUser(this);
+    }
 
-        if (pronouns != null) {
-            SimplyPronouns.getInstance().getStorageManager().savePronounsUser(uuid, null, pronouns.asString());
-        }
+    public @Nullable String getPreferredName() {
+        return preferredName;
+    }
+
+    public void setPreferredName(@Nullable String preferredName) {
+        this.preferredName = preferredName;
+        SimplyPronouns.getInstance().getStorageManager().savePronounsUser(this);
     }
 }

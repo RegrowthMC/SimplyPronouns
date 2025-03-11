@@ -14,13 +14,24 @@ public class MySQLStorage extends AbstractSQLStorage {
     }
 
     @Override
-    public String getSavePronounsStatement() {
-        return String.format("INSERT INTO %s (uuid, username, pronouns) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE pronouns = VALUES(pronouns);", USER_TABLE);
+    public String getSavePronounsUserStatement() {
+        return String.format("""
+            INSERT INTO %s (uuid, username, pronouns, preferred_name)
+            VALUES (?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            pronouns = VALUES(pronouns),
+            preferred_name = VALUES(preferred_name);
+            """, USER_TABLE);
     }
 
     @Override
     public String getSavePronounStatusStatement() {
-        return String.format("INSERT INTO %s (pronoun, status) VALUES (?, ?) ON DUPLICATE KEY UPDATE status = VALUES(status);", PRONOUN_TABLE);
+        return String.format("""
+            INSERT INTO %s (pronoun, status)
+            VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE
+            status = VALUES(status);
+            """, PRONOUN_TABLE);
     }
 
     @Override
