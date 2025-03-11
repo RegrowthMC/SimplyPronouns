@@ -83,6 +83,10 @@ public class StorageManager {
         return runAsync(() -> storage.loadPronouns(pronouns));
     }
 
+    public CompletableFuture<List<String>> loadPronouns(Pronoun.Status status) {
+        return runAsync(() -> storage.loadPronouns(status));
+    }
+
     public CompletableFuture<Pronoun.Status> loadPronounStatus(String pronoun) {
         return runAsync(() -> storage.loadPronounStatus(pronoun));
     }
