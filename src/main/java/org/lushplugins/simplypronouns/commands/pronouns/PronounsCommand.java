@@ -46,13 +46,18 @@ public class PronounsCommand extends Command {
             return true;
         }
 
+        if (SimplyPronouns.getInstance().isBlockedByFilters(requestedPronouns)) {
+            ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
+            return true;
+        }
+
         PronounsUser user = SimplyPronouns.getInstance().getUserManager().getCachedUser(player.getUniqueId());
         if (user == null) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
             return true;
         }
 
-        SimplyPronouns.getInstance().getPronounManager().getPronouns(requestedPronouns.split("/")).thenAccept(pronouns -> {
+        SimplyPronouns.getInstance().getPronounManager().compilePronouns(requestedPronouns.split("/")).thenAccept(pronouns -> {
             Bukkit.getScheduler().runTask(SimplyPronouns.getInstance(), () -> {
                 TermsAcceptGui.builder()
                     .terms("""
