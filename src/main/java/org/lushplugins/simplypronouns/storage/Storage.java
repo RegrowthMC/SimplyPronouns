@@ -2,6 +2,7 @@ package org.lushplugins.simplypronouns.storage;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lushplugins.lushlib.utils.Pair;
 import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
@@ -28,9 +29,9 @@ public interface Storage {
 
     void savePronounsUser(@NotNull PronounsUser user);
 
-    default Pronoun loadPronoun(String pronoun) {
+    default @Nullable Pronoun loadPronoun(String pronoun) {
         Pronoun.Status status = loadPronounStatus(pronoun);
-        return new Pronoun(pronoun, status);
+        return status != null ? new Pronoun(pronoun, status) : null;
     }
 
     default List<Pronoun> loadPronouns(String[] pronouns) {
