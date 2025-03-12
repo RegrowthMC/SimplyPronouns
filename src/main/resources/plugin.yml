@@ -18,4 +18,5 @@ commands:
       - checkname
     usage: /checkpreferredname <player>
 softdepend:
+  - LushChatFilter
   - PlaceholderAPI
