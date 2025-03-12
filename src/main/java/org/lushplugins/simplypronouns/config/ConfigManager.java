@@ -31,7 +31,7 @@ public class ConfigManager {
         this.requireApproval = config.getBoolean("require-approval");
 
         this.discordMessages = new HashMap<>();
-        ConfigurationSection discordMessagesSection = config.getConfigurationSection("messages");
+        ConfigurationSection discordMessagesSection = config.getConfigurationSection("discord-logging");
         if (discordMessagesSection != null) {
             discordMessagesSection.getValues(false).forEach((key, value) -> {
                 if (value instanceof ConfigurationSection discordMessageConfig) {
