@@ -61,7 +61,7 @@ public class SetPreferredNameCommand extends SubCommand {
             return true;
         }
 
-        user.setPreferredName(null);
+        user.setPreferredName(preferredName);
 
         ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("preferred-name-set" + (other ? "-other" : ""))
             .replace("%preferred_name%", preferredName)
