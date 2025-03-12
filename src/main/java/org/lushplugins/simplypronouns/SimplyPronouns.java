@@ -51,9 +51,9 @@ public final class SimplyPronouns extends SpigotPlugin {
 
         registerCommand(new SimplyPronounsCommand());
         registerCommand(new PronounsCommand());
-        registerCommand(new CheckPronounsCommand());
+        registerCommand(new CheckPronounsCommand("checkpronouns"));
         registerCommand(new PreferredNameCommand());
-        registerCommand(new CheckPreferredNameCommand());
+        registerCommand(new CheckPreferredNameCommand("checkpreferredname"));
     }
 
     @Override

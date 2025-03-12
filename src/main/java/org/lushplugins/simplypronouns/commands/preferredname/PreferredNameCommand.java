@@ -13,7 +13,9 @@ public class PreferredNameCommand extends Command {
 
     public PreferredNameCommand() {
         super("preferredname");
-//        addSubCommand(new RequestedPreferredNamesCommand());
+        addSubCommand(new CheckPreferredNameCommand("check"));
+        addSubCommand(new RemovePreferredNameCommand());
+        addSubCommand(new SetPreferredNameCommand());
     }
 
     @Override

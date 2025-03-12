@@ -10,12 +10,13 @@ import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.data.PronounsUser;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CheckPreferredNameCommand extends Command {
 
-    public CheckPreferredNameCommand() {
-        super("checkpreferredname");
+    public CheckPreferredNameCommand(String name) {
+        super(name);
     }
 
     @Override
@@ -53,7 +54,11 @@ public class CheckPreferredNameCommand extends Command {
     }
 
     @Override
-    public @Nullable List<String> tabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
-        return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+    public @Nullable List<String> tabComplete(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
+        if (args.length == 1) {
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        }
+
+        return Collections.emptyList();
     }
 }

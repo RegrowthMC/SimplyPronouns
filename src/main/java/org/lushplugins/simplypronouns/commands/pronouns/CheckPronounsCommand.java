@@ -11,12 +11,13 @@ import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.pronouns.Pronouns;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CheckPronounsCommand extends Command {
 
-    public CheckPronounsCommand() {
-        super("checkpronouns");
+    public CheckPronounsCommand(String name) {
+        super(name);
     }
 
     @Override
@@ -54,7 +55,11 @@ public class CheckPronounsCommand extends Command {
     }
 
     @Override
-    public @Nullable List<String> tabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
-        return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+    public @Nullable List<String> tabComplete(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
+        if (args.length == 1) {
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        }
+
+        return Collections.emptyList();
     }
 }

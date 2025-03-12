@@ -4,13 +4,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lushplugins.lushlib.command.SubCommand;
 import org.lushplugins.simplypronouns.gui.RequestsGui;
 
-public class RequestedPronounsCommand extends SubCommand {
+import java.util.List;
 
-    public RequestedPronounsCommand() {
-        super("requests");
+public class ModeratePronounsCommand extends SubCommand {
+
+    public ModeratePronounsCommand() {
+        super("moderate");
         addRequiredPermission("simplypronouns.pronouns.requests");
     }
 

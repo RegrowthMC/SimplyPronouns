@@ -6,10 +6,16 @@ require-approval: false
 
 messages:
   pronouns-set: "Your pronouns have been set to '%pronouns%'"
+  pronouns-set-other: "%player%'s pronouns have been set to '%pronouns%'"
+  pronouns-remove: "Your pronouns have been removed"
+  pronouns-remove-other: "%player%'s pronouns have been removed"
   pronouns-char-limit: "Pronouns cannot exceed 24 characters"
   check-pronouns: "%player%'s pronouns are '%pronouns%'"
   check-pronouns-none: "%player% has not set any pronouns"
   preferred-name-set: "Your preferred name have been set to '%preferred_name%'"
+  preferred-name-set-other: "%player%'s preferred name have been set to '%preferred_name%'"
+  preferred-name-remove: "Your preferred name have been removed"
+  preferred-name-remove-other: "%player%'s preferred name have been removed"
   preferred-name-char-limit: "Preferred names cannot exceed 12 characters"
   check-preferred-name: "%player%'s preferred name is '%preferred_name%'"
   check-preferred-name-none: "%player% has not set a preferred name"
