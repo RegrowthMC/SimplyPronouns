@@ -7,6 +7,7 @@ import org.lushplugins.lushlib.command.SubCommand;
 import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
+import org.lushplugins.simplypronouns.util.DiscordUtil;
 
 public class BlacklistPronounsCommand extends SubCommand {
 
@@ -27,6 +28,14 @@ public class BlacklistPronounsCommand extends SubCommand {
         SimplyPronouns.getInstance().getPronounManager().findOrCreatePronoun(rawPronoun).thenAccept(pronoun -> {
             pronoun.setStatus(Pronoun.Status.DENIED);
         });
+
+        DiscordUtil.Message discordMessage = SimplyPronouns.getInstance().getConfigManager().getDiscordLog("request-denied");
+        if (discordMessage != null) {
+            discordMessage.send((string) -> string
+                .replace("%input%", "Pronoun")
+                .replace("%content%", rawPronoun)
+                .replace("%player%", sender.getName()));
+        }
 
         return true;
     }
