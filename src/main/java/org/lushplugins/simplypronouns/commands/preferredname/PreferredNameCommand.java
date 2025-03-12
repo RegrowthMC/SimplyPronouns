@@ -8,6 +8,7 @@ import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.gui.TermsAcceptGui;
+import org.lushplugins.simplypronouns.util.DiscordUtil;
 
 public class PreferredNameCommand extends Command {
 
@@ -45,6 +46,15 @@ public class PreferredNameCommand extends Command {
 
         if (SimplyPronouns.getInstance().isBlockedByFilters(preferredName)) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
+
+            DiscordUtil.Message discordMessage = SimplyPronouns.getInstance().getConfigManager().getDiscordLog("filtered");
+            if (discordMessage != null) {
+                discordMessage.send((string) -> string
+                    .replace("%input%", "Preferred Name")
+                    .replace("%content%", preferredName)
+                    .replace("%player%", player.getName())
+                    .replace("%input_type%", "preferred_name"));
+            }
             return true;
         }
 

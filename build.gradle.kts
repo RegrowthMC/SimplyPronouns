@@ -27,6 +27,7 @@ dependencies {
 
     // Libraries
     implementation("org.lushplugins:LushLib:0.10.46")
+    implementation("club.minnced:discord-webhooks:0.8.4")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.xerial:sqlite-jdbc:3.46.0.0")
@@ -48,6 +49,7 @@ tasks {
     }
 
     shadowJar {
+        relocate("club.minnced.discord", "org.lushplugins.simplypronouns.libraries.discord")
         relocate("org.lushplugins.lushlib", "org.lushplugins.simplypronouns.libraries.lushlib")
 
         minimize()

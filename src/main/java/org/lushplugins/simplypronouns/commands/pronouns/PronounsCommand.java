@@ -9,6 +9,7 @@ import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.data.PronounsUser;
 import org.lushplugins.simplypronouns.gui.TermsAcceptGui;
+import org.lushplugins.simplypronouns.util.DiscordUtil;
 
 import java.util.regex.Pattern;
 
@@ -37,6 +38,7 @@ public class PronounsCommand extends Command {
             return true;
         }
 
+        // TODO: Add checks to SetPronouns and SetPreferredName
         String requestedPronouns = args[0];
         if (requestedPronouns.length() > 24) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-char-limit"));
@@ -51,6 +53,15 @@ public class PronounsCommand extends Command {
 
         if (SimplyPronouns.getInstance().isBlockedByFilters(requestedPronouns)) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("failed-to-set"));
+
+            DiscordUtil.Message discordMessage = SimplyPronouns.getInstance().getConfigManager().getDiscordLog("filtered");
+            if (discordMessage != null) {
+                discordMessage.send((string) -> string
+                    .replace("%input%", "Pronouns")
+                    .replace("%content%", requestedPronouns)
+                    .replace("%player%", player.getName())
+                    .replace("%input_type%", "pronouns"));
+            }
             return true;
         }
 

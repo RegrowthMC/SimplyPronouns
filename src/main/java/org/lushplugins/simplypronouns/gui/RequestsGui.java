@@ -10,6 +10,7 @@ import org.lushplugins.lushlib.gui.inventory.PagedGui;
 import org.lushplugins.lushlib.utils.DisplayItemStack;
 import org.lushplugins.simplypronouns.SimplyPronouns;
 import org.lushplugins.simplypronouns.pronouns.Pronoun;
+import org.lushplugins.simplypronouns.util.DiscordUtil;
 
 import java.util.List;
 
@@ -80,6 +81,14 @@ public class RequestsGui extends PagedGui {
                     cachedPronoun.setStatus(status);
                 } else {
                     SimplyPronouns.getInstance().getStorageManager().savePronounStatus(this.pronoun, status);
+                }
+
+                DiscordUtil.Message discordMessage = SimplyPronouns.getInstance().getConfigManager().getDiscordLog("request-" + status.name().toLowerCase());
+                if (discordMessage != null) {
+                    discordMessage.send((string) -> string
+                        .replace("%input%", "Pronoun")
+                        .replace("%content%", this.pronoun)
+                        .replace("%player%", event.getWhoClicked().getName()));
                 }
 
                 super.click(event);
