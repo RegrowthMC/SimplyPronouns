@@ -29,7 +29,7 @@ public class SetPronounsCommand extends SubCommand {
             return true;
         }
 
-        String requestedPronouns = args[0];
+        String requestedPronouns = args[0].toLowerCase();
         if (requestedPronouns.equals("<pronouns>")) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("invalid-command")
                 .replace("%command%", "/pronouns set <pronouns> <player>"));

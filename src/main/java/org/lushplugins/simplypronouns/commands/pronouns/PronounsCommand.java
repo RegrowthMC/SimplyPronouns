@@ -39,7 +39,7 @@ public class PronounsCommand extends Command {
         }
 
         // TODO: Add checks to SetPronouns and SetPreferredName
-        String requestedPronouns = args[0];
+        String requestedPronouns = args[0].toLowerCase();
         if (requestedPronouns.length() > 24) {
             ChatColorHandler.sendMessage(sender, SimplyPronouns.getInstance().getConfigManager().getMessage("pronouns-char-limit"));
             return true;
